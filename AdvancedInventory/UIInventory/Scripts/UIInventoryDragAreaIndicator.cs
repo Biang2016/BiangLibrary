@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace BiangStudio.AdvancedInventory.UIInventory
 {
+    // test submodule
     public class UIInventoryDragAreaIndicator : DragAreaIndicator
     {
         public UIInventory UIInventory;
