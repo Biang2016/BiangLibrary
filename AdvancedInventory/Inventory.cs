@@ -349,6 +349,7 @@ namespace BiangStudio.AdvancedInventory
 
         public void PutDownItem(InventoryItem item)
         {
+            if (!InventoryInfo.HasItem(item)) return;
             if (InventoryInfo.HasPreviewItem(item))
             {
                 AddItem(item, false, false);
