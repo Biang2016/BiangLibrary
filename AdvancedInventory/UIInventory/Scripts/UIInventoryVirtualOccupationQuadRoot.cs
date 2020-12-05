@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BiangStudio.AdvancedInventory.UIInventory
 {
-    public class UIInventoryItemVirtualOccupationRoot : MonoBehaviour
+    public class UIInventoryVirtualOccupationRoot : MonoBehaviour
     {
         internal List<UIInventoryVirtualOccupationQuad> uiInventoryVirtualOccupationQuads = new List<UIInventoryVirtualOccupationQuad>();
 

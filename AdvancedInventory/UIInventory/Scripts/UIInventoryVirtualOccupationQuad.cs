@@ -6,14 +6,6 @@ namespace BiangStudio.AdvancedInventory.UIInventory
 {
     public class UIInventoryVirtualOccupationQuad : MonoBehaviour
     {
-        /// <summary>
-        /// If you use object pool, please invoke this function before reuse.
-        /// </summary>
-        public void OnRecycled()
-        {
-            Inventory = null;
-        }
-
         void Awake()
         {
             RectTransform = (RectTransform) transform;
