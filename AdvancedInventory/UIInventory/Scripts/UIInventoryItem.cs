@@ -99,7 +99,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
 
         private void SetVirtualGridPos(GridPosR gridPos_World)
         {
-            UIInventory.UIInventoryPanel.UIInventoryItemVirtualOccupationRoot.Clear();
+            UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.Clear();
             foreach (GridPos gp_matrix in InventoryItem.OccupiedGridPositions_Matrix)
             {
                 if (!UIInventory.ContainsGP(gp_matrix))
@@ -107,9 +107,9 @@ namespace BiangStudio.AdvancedInventory.UIInventory
                     continue;
                 }
 
-                UIInventoryVirtualOccupationQuad quad = UIInventory.CreateUIInventoryItemVirtualOccupationQuad(UIInventory.UIInventoryPanel.UIInventoryItemVirtualOccupationRoot.transform);
+                UIInventoryVirtualOccupationQuad quad = UIInventory.CreateUIInventoryItemVirtualOccupationQuad(UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.transform);
                 quad.Init(InventoryItem.Inventory.GridSize, gp_matrix, InventoryItem.Inventory);
-                UIInventory.UIInventoryPanel.UIInventoryItemVirtualOccupationRoot.uiInventoryVirtualOccupationQuads.Add(quad);
+                UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.uiInventoryVirtualOccupationQuads.Add(quad);
             }
         }
 
@@ -157,7 +157,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
                 Vector2 diffLocal = RectTransform.parent.InverseTransformVector(diffFromStart);
                 Vector2 currentLocalPos = dragStartLocalPos + diffLocal;
                 RectTransform.anchoredPosition = currentLocalPos;
-                UIInventory.UIInventoryPanel.UIInventoryItemVirtualOccupationRoot.Clear();
+                UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.Clear();
                 if (dragAreaIndicator != null) // drag to other DragAreas
                 {
                     if (DragManager.Instance.PausedDrag != null)
@@ -204,7 +204,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
             if (dragAreaIndicator == UIInventory.DragAreaIndicator)
             {
                 bool validPutDown = true;
-                UIInventory.UIInventoryPanel.UIInventoryItemVirtualOccupationRoot.Clear();
+                UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.Clear();
                 if (UIInventory.CheckSpaceAvailable(dragStartOccupiedPositions_Matrix))
                 {
                     UIInventory.ResetGrids(dragStartOccupiedPositions_Matrix);

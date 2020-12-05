@@ -31,7 +31,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
 
         public Transform ItemContainer;
 
-        internal UIInventoryVirtualOccupationRoot UIInventoryVirtualOccupationRoot;
+        internal UIInventoryVirtualOccupationQuadRoot UIInventoryVirtualOccupationQuadRoot;
 
         public UIInventoryDragAreaIndicator UIInventoryDragAreaIndicator;
 
@@ -43,7 +43,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
 
         void Awake()
         {
-            UIInventoryVirtualOccupationRoot = GetComponentInChildren<UIInventoryVirtualOccupationRoot>();
+            UIInventoryVirtualOccupationQuadRoot = GetComponentInChildren<UIInventoryVirtualOccupationQuadRoot>();
         }
 
         void Update()
