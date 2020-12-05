@@ -61,6 +61,7 @@ namespace BiangStudio.DragHover
                 ExitMenu = 1 << 1,
                 SettingMenu = 1 << 2,
                 Inventory = 1 << 3,
+                Building = 1 << 4,
                 UI = StartMenu | ExitMenu | SettingMenu,
             }
 
