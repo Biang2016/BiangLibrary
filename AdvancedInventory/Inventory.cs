@@ -168,6 +168,16 @@ namespace BiangStudio.AdvancedInventory
             return true;
         }
 
+        public bool ContainsIndex(int col, int row)
+        {
+            if (col < 0 || col >= Columns || row < 0 || row >= Rows)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public void RefreshInventoryGrids()
         {
             RefreshConflictAndIsolation();

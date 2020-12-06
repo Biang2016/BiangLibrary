@@ -43,6 +43,12 @@ namespace BiangStudio.DragHover
             M_StateMachine.Update();
         }
 
+        public override void ShutDown()
+        {
+            base.ShutDown();
+            HoverActions.Clear();
+        }
+
         public StateMachine M_StateMachine;
 
         public class StateMachine
