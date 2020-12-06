@@ -27,11 +27,11 @@ namespace BiangStudio.AdvancedInventory.UIInventory
         public Transform Container;
 
         [SerializeField]
-        private Transform GridContainer;
+        private Transform UIInventoryGridContainer;
 
         public Transform ItemContainer;
 
-        internal UIInventoryVirtualOccupationQuadRoot UIInventoryVirtualOccupationQuadRoot;
+        public UIInventoryVirtualOccupationQuadRoot UIInventoryVirtualOccupationQuadRoot;
 
         public UIInventoryDragAreaIndicator UIInventoryDragAreaIndicator;
 
@@ -40,11 +40,6 @@ namespace BiangStudio.AdvancedInventory.UIInventory
 
         public UnityAction<UIInventoryItem> OnHoverUIInventoryItem;
         public UnityAction<UIInventoryItem> OnHoverEndUIInventoryItem;
-
-        void Awake()
-        {
-            UIInventoryVirtualOccupationQuadRoot = GetComponentInChildren<UIInventoryVirtualOccupationQuadRoot>();
-        }
 
         void Update()
         {
@@ -79,7 +74,7 @@ namespace BiangStudio.AdvancedInventory.UIInventory
             {
                 for (int col = 0; col < UIInventory.Columns; col++)
                 {
-                    UIInventoryGrid bg = UIInventory.CreateUIInventoryGrid(GridContainer);
+                    UIInventoryGrid bg = UIInventory.CreateUIInventoryGrid(UIInventoryGridContainer);
                     bg.Init(UIInventory.InventoryGridMatrix[col, row], new GridPos(col, row));
                     uiInventoryGridMatrix[col, row] = bg;
                 }

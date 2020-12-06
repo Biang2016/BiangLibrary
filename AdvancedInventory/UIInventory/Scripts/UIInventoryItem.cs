@@ -91,12 +91,6 @@ namespace BiangStudio.AdvancedInventory.UIInventory
             UIInventoryItemGridRoot.SetGridColor(InventoryItem.ItemContentInfo.ItemColor);
         }
 
-        #region IDraggable
-
-        private Vector2 dragStartLocalPos;
-        private GridPosR dragStartGridPos_Matrix;
-        private List<GridPos> dragStartOccupiedPositions_Matrix = new List<GridPos>();
-
         private void SetVirtualGridPos(GridPosR gridPos_World)
         {
             UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.Clear();
@@ -112,6 +106,12 @@ namespace BiangStudio.AdvancedInventory.UIInventory
                 UIInventory.UIInventoryPanel.UIInventoryVirtualOccupationQuadRoot.uiInventoryVirtualOccupationQuads.Add(quad);
             }
         }
+
+        #region IDraggable
+
+        private Vector2 dragStartLocalPos;
+        private GridPosR dragStartGridPos_Matrix;
+        private List<GridPos> dragStartOccupiedPositions_Matrix = new List<GridPos>();
 
         public void Draggable_OnMouseDown(DragAreaIndicator dragAreaIndicator, Collider collider)
         {
