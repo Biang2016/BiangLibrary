@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using BiangStudio.GameDataFormat;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -375,13 +374,6 @@ namespace BiangStudio
             return sb.ToString().Trim('\n');
         }
 
-        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings
-        {
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-        };
-
         public static List<T> GetRandomFromList<T>(List<T> OriList, int number, SRandom random, List<T> exceptList = null)
         {
             return GetRandomFromListCore(OriList, number, random, exceptList);
@@ -548,7 +540,7 @@ namespace BiangStudio
 
         public static string AddHighLightColorToText(string highLightText, string color)
         {
-            return "<" + color + ">" + highLightText + "</color>";
+            return "<color=\"" + color + "\">" + highLightText + "</color>";
         }
 
         private static string colorStringPattern = @"(.*)(<#)([0-9a-fA-F]{6,8}>.*</color>)(.*)";
