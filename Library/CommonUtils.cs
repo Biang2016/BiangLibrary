@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using BiangLibrary.GameDataFormat;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -680,13 +679,6 @@ namespace BiangLibrary
 
             return sb.ToString().Trim('\n');
         }
-
-        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings
-        {
-            MissingMemberHandling = MissingMemberHandling.Ignore,
-            NullValueHandling = NullValueHandling.Ignore,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-        };
 
         public static void CopyDirectory(string srcPath, string destPath)
         {
