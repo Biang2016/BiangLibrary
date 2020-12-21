@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BiangStudio.Controller
+namespace BiangLibrary.Controller
 {
     public class Controller
     {

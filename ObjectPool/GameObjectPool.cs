@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace BiangStudio.ObjectPool
+namespace BiangLibrary.ObjectPool
 {
     public class GameObjectPool : MonoBehaviour
     {

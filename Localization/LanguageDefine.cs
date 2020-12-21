@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.Localization
+﻿namespace BiangLibrary.Localization
 {
     internal enum LanguageShorts
     {

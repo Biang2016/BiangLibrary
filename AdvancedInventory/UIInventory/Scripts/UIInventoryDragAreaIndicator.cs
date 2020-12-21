@@ -1,8 +1,8 @@
-﻿using BiangStudio.DragHover;
-using BiangStudio.GameDataFormat.Grid;
+﻿using BiangLibrary.DragHover;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     public class UIInventoryDragAreaIndicator : DragAreaIndicator
     {

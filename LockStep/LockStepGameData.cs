@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BiangStudio.LockStep
+namespace BiangLibrary.LockStep
 {
     public class GameData
     {

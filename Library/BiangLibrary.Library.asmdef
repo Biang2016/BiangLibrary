@@ -1,8 +1,6 @@
 {
-    "name": "BiangObjectPool",
-    "references": [
-        "GUID:8621592cb6e51f34294c055a79477552"
-    ],
+    "name": "BiangLibrary.Library",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -10,5 +8,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,7 +1,7 @@
-﻿using BiangStudio.GameDataFormat.Grid;
+﻿using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     public abstract class DragProcessor
     {

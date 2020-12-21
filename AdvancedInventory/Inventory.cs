@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BiangStudio.DragHover;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.DragHover;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.AdvancedInventory
+namespace BiangLibrary.AdvancedInventory
 {
     [Serializable]
     public abstract class Inventory
@@ -155,7 +155,7 @@ namespace BiangStudio.AdvancedInventory
 
         public void LogError(string log)
         {
-            LogErrorHandler?.Invoke($"BiangStudio.AdvancedInventory Error: {log}");
+            LogErrorHandler?.Invoke($"BiangLibrary.AdvancedInventory Error: {log}");
         }
 
         public bool ContainsGP(GridPos gp)

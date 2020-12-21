@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace BiangStudio.GamePlay.UI
+namespace BiangLibrary.GamePlay.UI
 {
     public class ConfirmPanel : BaseUIPanel
     {

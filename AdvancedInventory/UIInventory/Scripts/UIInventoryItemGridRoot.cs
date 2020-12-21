@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     public class UIInventoryItemGridRoot : MonoBehaviour
     {

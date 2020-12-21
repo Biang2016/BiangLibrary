@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.Controller
+﻿namespace BiangLibrary.Controller
 {
     /// <summary>
     /// value of this enum should match with the postfix in unity input settings

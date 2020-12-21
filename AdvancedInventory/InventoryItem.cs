@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BiangStudio.CloneVariant;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.CloneVariant;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.AdvancedInventory
+namespace BiangLibrary.AdvancedInventory
 {
     [Serializable]
     public class InventoryItem : IClone<InventoryItem>

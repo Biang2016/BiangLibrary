@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using BiangStudio.Singleton;
+using BiangLibrary.Singleton;
 using UnityEngine;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     public class MouseHoverManager : TSingletonBaseManager<MouseHoverManager>
     {

@@ -1,8 +1,8 @@
-﻿using BiangStudio.GameDataFormat.Grid;
+﻿using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     /// <summary>
     /// The class control the display and the background of a grid in a uiInventory

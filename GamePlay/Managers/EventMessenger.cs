@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BiangStudio.Messenger
+namespace BiangLibrary.Messenger
 {
     public delegate void Callback();
 

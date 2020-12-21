@@ -1,10 +1,10 @@
 ﻿using System;
-using BiangStudio.DragHover;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.DragHover;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     [Serializable]
     public class UIInventory : Inventory

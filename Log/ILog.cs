@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BiangStudio.Log
+namespace BiangLibrary.Log
 {
     public interface ILog
     {

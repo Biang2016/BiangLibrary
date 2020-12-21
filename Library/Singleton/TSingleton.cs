@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.Singleton
+﻿namespace BiangLibrary.Singleton
 {
     public abstract class TSingleton<T> where T : new()
     {

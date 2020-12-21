@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace BiangStudio.GamePlay.UI
+namespace BiangLibrary.GamePlay.UI
 {
     /// <summary>
     /// UGUI Tab键切换InputField

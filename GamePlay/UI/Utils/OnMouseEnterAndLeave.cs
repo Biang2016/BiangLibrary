@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace BiangStudio.GamePlay.UI
+namespace BiangLibrary.GamePlay.UI
 {
     public class OnMouseEnterAndLeave : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

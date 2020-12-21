@@ -1,8 +1,8 @@
-﻿using BiangStudio.Singleton;
+﻿using BiangLibrary.Singleton;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BiangStudio.GamePlay.UI
+namespace BiangLibrary.GamePlay.UI
 {
     public class UIMaskMgr : MonoSingleton<UIMaskMgr>
     {

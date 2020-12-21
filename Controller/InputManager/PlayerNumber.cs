@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.Controller
+﻿namespace BiangLibrary.Controller
 {
     public enum PlayerNumber
     {

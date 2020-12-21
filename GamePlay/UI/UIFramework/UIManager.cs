@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using BiangStudio.Singleton;
+using BiangLibrary.Singleton;
 using UnityEngine;
 
-namespace BiangStudio.GamePlay.UI
+namespace BiangLibrary.GamePlay.UI
 {
     public class UIManager : MonoSingleton<UIManager>
     {
@@ -54,7 +54,7 @@ namespace BiangStudio.GamePlay.UI
 
         internal static void LogError(string log)
         {
-            Instance.LogErrorHandler?.Invoke("[BiangStudio.UI] " + log);
+            Instance.LogErrorHandler?.Invoke("[BiangLibrary.UI] " + log);
         }
 
         public BaseUIPanel GetPeekUIForm()

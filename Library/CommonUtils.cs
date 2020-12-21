@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using BiangStudio.GameDataFormat;
+using BiangLibrary.GameDataFormat;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,7 +18,7 @@ using Random = UnityEngine.Random;
 using UnityEditor;
 
 #endif
-namespace BiangStudio
+namespace BiangLibrary
 {
     public static class CommonUtils
     {

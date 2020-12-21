@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.GamePlay.UI
+﻿namespace BiangLibrary.GamePlay.UI
 {
     public class UIType
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     public class DragProcessor<T> : DragProcessor where T : MonoBehaviour
     {

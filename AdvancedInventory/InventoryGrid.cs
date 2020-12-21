@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace BiangStudio.AdvancedInventory
+namespace BiangLibrary.AdvancedInventory
 {
     [Serializable]
     public class InventoryGrid

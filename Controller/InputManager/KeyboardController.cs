@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BiangStudio.Controller
+namespace BiangLibrary.Controller
 {
     public class KeyBoardController : Controller
     {

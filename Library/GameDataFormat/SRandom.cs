@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BiangStudio.GameDataFormat
+namespace BiangLibrary.GameDataFormat
 {
     public class SRandom
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BiangStudio.CloneVariant
+namespace BiangLibrary.CloneVariant
 {
     public static class CloneVariantUtils
     {

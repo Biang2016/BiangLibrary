@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BiangStudio.Singleton;
+using BiangLibrary.Singleton;
 using UnityEngine.Events;
 
-namespace BiangStudio.Controller
+namespace BiangLibrary.Controller
 {
     public class MultiControllerManager : MonoSingleton<MultiControllerManager>
     {

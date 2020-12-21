@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace BiangStudio.GameDataFormat
+namespace BiangLibrary.GameDataFormat
 {
     public class DataStream
     {

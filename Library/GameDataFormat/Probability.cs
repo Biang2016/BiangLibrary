@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.GameDataFormat
+﻿namespace BiangLibrary.GameDataFormat
 {
     public interface Probability
     {

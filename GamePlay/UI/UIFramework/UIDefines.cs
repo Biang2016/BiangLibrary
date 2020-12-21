@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.GamePlay.UI
+﻿namespace BiangLibrary.GamePlay.UI
 {
     /// <summary>
     /// UI窗体类型

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace BiangStudio.GameDataFormat.Grid
+namespace BiangLibrary.GameDataFormat.Grid
 {
     public static class GridUtils
     {

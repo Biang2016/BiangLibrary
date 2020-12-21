@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 
-namespace BiangStudio.AdvancedInventory
+namespace BiangLibrary.AdvancedInventory
 {
     public interface IInventoryItemContentInfo
     {

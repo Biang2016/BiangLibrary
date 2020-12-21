@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     [RequireComponent(typeof(BoxCollider))]
     public class DragAreaIndicator : MonoBehaviour

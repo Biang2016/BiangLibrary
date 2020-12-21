@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using BiangStudio.GameDataFormat.Grid;
-using BiangStudio.Singleton;
+using BiangLibrary.GameDataFormat.Grid;
+using BiangLibrary.Singleton;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     public class DragManager : TSingletonBaseManager<DragManager>
     {

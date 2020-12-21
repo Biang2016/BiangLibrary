@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using BiangStudio.Singleton;
+using BiangLibrary.Singleton;
 using UnityEngine;
 
-namespace BiangStudio.GamePlay
+namespace BiangLibrary.GamePlay
 {
     public class PrefabManager : TSingletonBaseManager<PrefabManager>
     {

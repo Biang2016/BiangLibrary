@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BiangStudio.Singleton
+namespace BiangLibrary.Singleton
 {
     public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {

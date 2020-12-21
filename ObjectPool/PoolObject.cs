@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace BiangStudio.ObjectPool
+namespace BiangLibrary.ObjectPool
 {
     public class PoolObject : MonoBehaviour
     {

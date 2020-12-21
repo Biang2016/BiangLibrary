@@ -1,8 +1,8 @@
-﻿using BiangStudio.GameDataFormat;
+﻿using BiangLibrary.GameDataFormat;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.LockStep
+namespace BiangLibrary.LockStep
 {
     public class LockStepLogic
     {

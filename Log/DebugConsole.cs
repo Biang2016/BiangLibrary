@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace BiangStudio.Log
+namespace BiangLibrary.Log
 {
     /// <summary>
     /// A console to display Unity's debug logs in-game.

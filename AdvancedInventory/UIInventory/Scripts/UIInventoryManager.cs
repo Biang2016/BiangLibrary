@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using BiangStudio.Singleton;
+using BiangLibrary.Singleton;
 using UnityEngine;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     public class UIInventoryManager : TSingletonBaseManager<UIInventoryManager>
     {

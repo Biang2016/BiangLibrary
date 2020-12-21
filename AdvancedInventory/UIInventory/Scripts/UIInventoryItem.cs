@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using BiangStudio.CloneVariant;
-using BiangStudio.DragHover;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.CloneVariant;
+using BiangLibrary.DragHover;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     public class UIInventoryItem : MonoBehaviour, IDraggable, IMouseHoverComponent
     {

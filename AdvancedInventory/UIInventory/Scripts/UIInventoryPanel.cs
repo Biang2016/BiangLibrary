@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BiangStudio.GameDataFormat.Grid;
+using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace BiangStudio.AdvancedInventory.UIInventory
+namespace BiangLibrary.AdvancedInventory.UIInventory
 {
     public class UIInventoryPanel : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace BiangStudio.GameDataFormat.Grid
+namespace BiangLibrary.GameDataFormat.Grid
 {
     [Serializable]
     public struct GridRect

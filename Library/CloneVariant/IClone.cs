@@ -1,4 +1,4 @@
-﻿namespace BiangStudio.CloneVariant
+﻿namespace BiangLibrary.CloneVariant
 {
     public interface IClone<T>
     {

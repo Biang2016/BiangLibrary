@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace BiangStudio.GameDataFormat
+namespace BiangLibrary.GameDataFormat
 {
     public partial struct Fix64 : IEquatable<Fix64>, IComparable<Fix64>
     {

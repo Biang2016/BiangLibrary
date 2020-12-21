@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BiangStudio.DragHover
+namespace BiangLibrary.DragHover
 {
     public class Draggable : MonoBehaviour
     {

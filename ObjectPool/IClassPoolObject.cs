@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BiangStudio.ObjectPool
+namespace BiangLibrary.ObjectPool
 {
     public interface IClassPoolObject<T>
     {
