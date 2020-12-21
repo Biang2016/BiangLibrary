@@ -482,6 +482,11 @@ namespace BiangStudio
 
         #region Time
 
+        public static string TimeToString(float timeTick)
+        {
+            return Mathf.FloorToInt(timeTick / 60f) + ":" + Mathf.FloorToInt(timeTick % 60).ToString().PadLeft(2, '0');
+        }
+
         public static string TimeToString_Milisecond(float timeTick)
         {
             return "." + Mathf.CeilToInt(timeTick % 1 * 10f);
