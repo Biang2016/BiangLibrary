@@ -11,7 +11,7 @@ namespace BiangStudio.GameDataFormat.Grid
         public int z;
         public Orientation orientation;
 
-        private static readonly GridPos zeroGPR = new GridPosR(0, 0, Orientation.Up);
+        private static readonly GridPosR zeroGPR = new GridPosR(0, 0, Orientation.Up);
         public static GridPosR Zero => zeroGPR;
         private static readonly GridPos oneGPR = new GridPosR(1, 1, Orientation.Up);
         public static GridPosR One => oneGPR;
@@ -81,7 +81,7 @@ namespace BiangStudio.GameDataFormat.Grid
 
         public static Orientation RotateOrientationAntiClockwise90(Orientation orientation)
         {
-            return (Orientation)(((int)orientation - 1 + 4) % 4);
+            return (Orientation) (((int) orientation - 1 + 4) % 4);
         }
 
         public static List<GridPos> TransformOccupiedPositions(GridPosR localGridPos, List<GridPos> ori_OccupiedPositions)
@@ -113,6 +113,24 @@ namespace BiangStudio.GameDataFormat.Grid
         public bool Equals(GridPos gp)
         {
             return gp.x == x && gp.z == z;
+        }
+
+        /// <summary>
+        /// clamp X, Z inside [-1, 1]
+        /// </summary>
+        /// <returns></returns>
+        public GridPos ClampOneUnit()
+        {
+            int newX = 0;
+            int newY = 0;
+            int newZ = 0;
+            if (x > 0) newX = 1;
+            if (x < 0) newX = -1;
+            if (x == 0) newX = 0;
+            if (z > 0) newZ = 1;
+            if (z < 0) newZ = -1;
+            if (z == 0) newZ = 0;
+            return new GridPos(newX, newZ);
         }
 
         public static GridPos operator -(GridPosR a, GridPosR b)
@@ -160,6 +178,11 @@ namespace BiangStudio.GameDataFormat.Grid
             return $"({x}, {z})";
         }
 
+        public override int GetHashCode()
+        {
+            return (x.GetHashCode() + z.GetHashCode() + orientation.GetHashCode()).GetHashCode();
+        }
+
         public enum Orientation
         {
             Up = 0,
@@ -188,6 +211,14 @@ namespace BiangStudio.GameDataFormat.Grid
 
         private static readonly GridPos zeroGP = new GridPos(0, 0);
         public static GridPos Zero => zeroGP;
+        private static readonly GridPos rightGP = new GridPos(1, 0);
+        public static GridPos Right => rightGP;
+        private static readonly GridPos leftGP = new GridPos(-1, 0);
+        public static GridPos Left => leftGP;
+        private static readonly GridPos forwardGP = new GridPos(0, 1);
+        public static GridPos Forward => forwardGP;
+        private static readonly GridPos backGP = new GridPos(0, -1);
+        public static GridPos Back => backGP;
 
         public GridPos(int x, int z)
         {
@@ -317,6 +348,11 @@ namespace BiangStudio.GameDataFormat.Grid
         {
             return $"({x},{z})";
         }
+
+        public override int GetHashCode()
+        {
+            return (x.GetHashCode() + z.GetHashCode()).GetHashCode();
+        }
     }
 
     [Serializable]
@@ -328,6 +364,18 @@ namespace BiangStudio.GameDataFormat.Grid
 
         private static readonly GridPos3D zeroGP = new GridPos3D(0, 0, 0);
         public static GridPos3D Zero => zeroGP;
+        private static readonly GridPos3D rightGP = new GridPos3D(1, 0, 0);
+        public static GridPos3D Right => rightGP;
+        private static readonly GridPos3D leftGP = new GridPos3D(-1, 0, 0);
+        public static GridPos3D Left => leftGP;
+        private static readonly GridPos3D upGP = new GridPos3D(0, 1, 0);
+        public static GridPos3D Up => upGP;
+        private static readonly GridPos3D downGP = new GridPos3D(0, -1, 0);
+        public static GridPos3D Down => downGP;
+        private static readonly GridPos3D forwardGP = new GridPos3D(0, 0, 1);
+        public static GridPos3D Forward => forwardGP;
+        private static readonly GridPos3D backGP = new GridPos3D(0, 0, -1);
+        public static GridPos3D Back => backGP;
 
         public GridPos3D(int x, int y, int z)
         {
@@ -380,6 +428,43 @@ namespace BiangStudio.GameDataFormat.Grid
         public Vector3 ToVector3()
         {
             return new Vector3(x, y, z);
+        }
+
+        /// <summary>
+        /// clamp X, Y, Z inside [-1, 1]
+        /// </summary>
+        /// <returns></returns>
+        public GridPos3D ClampOneUnit()
+        {
+            int newX = 0;
+            int newY = 0;
+            int newZ = 0;
+            if (x > 0) newX = 1;
+            if (x < 0) newX = -1;
+            if (x == 0) newX = 0;
+            if (y > 0) newY = 1;
+            if (y < 0) newY = -1;
+            if (y == 0) newY = 0;
+            if (z > 0) newZ = 1;
+            if (z < 0) newZ = -1;
+            if (z == 0) newZ = 0;
+            return new GridPos3D(newX, newY, newZ);
+        }
+
+        public GridPos3D Normalized()
+        {
+            int maxAxis = 0;
+            if (Mathf.Abs(x) >= Mathf.Abs(y) && Mathf.Abs(x) >= Mathf.Abs(z)) maxAxis = 0;
+            if (Mathf.Abs(y) >= Mathf.Abs(x) && Mathf.Abs(y) >= Mathf.Abs(z)) maxAxis = 1;
+            if (Mathf.Abs(z) >= Mathf.Abs(x) && Mathf.Abs(z) >= Mathf.Abs(y)) maxAxis = 2;
+            switch (maxAxis)
+            {
+                case 0: return x > 0 ? Right : (x < 0 ? Left : Zero);
+                case 1: return y > 0 ? Up : (y < 0 ? Down : Zero);
+                case 2: return z > 0 ? Forward : (z < 0 ? Back : Zero);
+            }
+
+            return Zero;
         }
 
         public static GridPos3D operator -(GridPos3D a)

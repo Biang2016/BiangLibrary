@@ -9,15 +9,21 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using BiangStudio.GameDataFormat;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+#if UNITY_EDITOR
+using UnityEditor;
 
+#endif
 namespace BiangStudio
 {
     public static class CommonUtils
     {
+        #region Color
+
         public static Color ChangeColorToWhite(this Color color, float whiteRatio)
         {
             float r = color.r;
@@ -64,6 +70,16 @@ namespace BiangStudio
 
         public static Color HSL_2_RGB(float H, float S, float L)
         {
+            float Hue_2_RGB(float v1, float v2, float vH) //Function Hue_2_RGB
+            {
+                if (vH < 0) vH += 1;
+                if (vH > 1) vH -= 1;
+                if ((6 * vH) < 1) return (v1 + (v2 - v1) * 6 * vH);
+                if ((2 * vH) < 1) return (v2);
+                if ((3 * vH) < 2) return (v1 + (v2 - v1) * ((2.0f / 3.0f) - vH) * 6);
+                return v1;
+            }
+
             //H, S and L input range = 0 ÷ 1.0
             //R, G and B output range = 0 ÷ 255
             float R;
@@ -98,15 +114,434 @@ namespace BiangStudio
             return new Color(R, G, B);
         }
 
-        static float Hue_2_RGB(float v1, float v2, float vH) //Function Hue_2_RGB
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="htmlColor">AARRGGBB</param>
+        /// <returns></returns>
+        public static Color HTMLColorToColor(this string htmlColor)
         {
-            if (vH < 0) vH += 1;
-            if (vH > 1) vH -= 1;
-            if ((6 * vH) < 1) return (v1 + (v2 - v1) * 6 * vH);
-            if ((2 * vH) < 1) return (v2);
-            if ((3 * vH) < 2) return (v1 + (v2 - v1) * ((2.0f / 3.0f) - vH) * 6);
-            return v1;
+            Color cl = new Color();
+            ColorUtility.TryParseHtmlString(htmlColor, out cl);
+            if (!cl.a.Equals(1))
+            {
+                cl = new Color(cl.g, cl.b, cl.a, cl.r);
+            }
+
+            return cl;
         }
+
+        public static string HighlightStringFormat(string src, string color, params object[] args)
+        {
+            string[] coloredStrings = new string[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                coloredStrings[i] = "<" + color + ">" + args[i] + "</color>";
+            }
+
+            return String.Format(src, coloredStrings);
+        }
+
+        public static string HighlightStringFormat(string src, string color, bool[] needTint, params object[] args)
+        {
+            string[] coloredStrings = new string[args.Length];
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (needTint[i])
+                {
+                    coloredStrings[i] = "<" + color + ">" + args[i] + "</color>";
+                }
+                else
+                {
+                    coloredStrings[i] = args[i].ToString();
+                }
+            }
+
+            return String.Format(src, coloredStrings);
+        }
+
+        public static string AddHighLightColorToText(string highLightText, string color)
+        {
+            return "<" + color + ">" + highLightText + "</color>";
+        }
+
+        private static string colorStringPattern = @"(.*)(<#)([0-9a-fA-F]{6,8}>.*</color>)(.*)";
+
+        public static string TextMeshProColorStringConvertToText(string colorString)
+        {
+            Regex rg = new Regex(colorStringPattern);
+            if (rg.IsMatch(colorString))
+            {
+                string replace = colorString;
+                while (rg.IsMatch(replace))
+                {
+                    replace = rg.Replace(replace, "$1<color=#$3$4");
+                }
+
+                return replace;
+            }
+
+            return colorString;
+        }
+
+        #endregion
+
+        #region RandomList
+
+        public static void Shuffle<T>(this List<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = Random.Range(0, n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
+        public static List<T> GetRandomFromList<T>(List<T> OriList, int number, List<T> exceptList = null)
+        {
+            return GetRandomFromListCore(OriList, number, exceptList);
+        }
+
+        public static T GetRandomFromList<T>(List<T> OriList)
+        {
+            if (OriList == null || OriList.Count == 0) return default;
+            int index = Random.Range(0, OriList.Count);
+            return OriList[index];
+        }
+
+        static HashSet<int> indices = new HashSet<int>();
+
+        private static List<T> GetRandomFromListCore<T>(List<T> OriList, int number, List<T> exceptList = null)
+        {
+            if (OriList == null || OriList.Count == 0) return new List<T>();
+
+            List<T> ori = new List<T>();
+            foreach (T t in OriList)
+            {
+                if (exceptList != null)
+                {
+                    if (exceptList.Contains(t))
+                    {
+                        continue;
+                    }
+                }
+
+                ori.Add(t);
+            }
+
+            if (number > ori.Count) number = ori.Count;
+
+            indices.Clear();
+            while (indices.Count < number)
+            {
+                int index = Random.Range(0, ori.Count);
+                if (!indices.Contains(index))
+                {
+                    indices.Add(index);
+                }
+            }
+
+            List<T> res = new List<T>();
+            foreach (int i in indices)
+            {
+                res.Add(ori[i]);
+            }
+
+            return res;
+        }
+
+        static SortedDictionary<int, Probability> resDict_GetRandomWithProbabilityFromList = new SortedDictionary<int, Probability>();
+
+        public static List<T> GetRandomWithProbabilityFromList<T>(List<T> OriList, int number) where T : Probability
+        {
+            resDict_GetRandomWithProbabilityFromList.Clear();
+            if (OriList == null || OriList.Count == 0) return new List<T>();
+
+            int accu = 0;
+            foreach (T probability in OriList)
+            {
+                if (probability.Probability > 0)
+                {
+                    accu += probability.Probability;
+                    resDict_GetRandomWithProbabilityFromList.Add(accu, probability);
+                }
+            }
+
+            HashSet<T> res = new HashSet<T>();
+            while (res.Count < number)
+            {
+                int index = Random.Range(0, accu);
+                foreach (int key in resDict_GetRandomWithProbabilityFromList.Keys)
+                {
+                    if (key >= index)
+                    {
+                        T pr = (T) resDict_GetRandomWithProbabilityFromList[key];
+                        if (!res.Contains(pr))
+                        {
+                            res.Add(pr);
+                        }
+                        else
+                        {
+                            if (!pr.IsSingleton)
+                            {
+                                res.Add((T) pr.ProbabilityClone());
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            return res.ToList();
+        }
+
+        public static T GetRandomWithProbabilityFromList<T>(List<T> OriList) where T : Probability
+        {
+            resDict_GetRandomWithProbabilityFromList.Clear();
+            if (OriList == null || OriList.Count == 0) return default;
+
+            int accu = 0;
+            foreach (T probability in OriList)
+            {
+                if (probability.Probability > 0)
+                {
+                    accu += probability.Probability;
+                    resDict_GetRandomWithProbabilityFromList.Add(accu, probability);
+                }
+            }
+
+            int index = Random.Range(0, accu);
+            foreach (int key in resDict_GetRandomWithProbabilityFromList.Keys)
+            {
+                if (key >= index)
+                {
+                    T pr = (T) resDict_GetRandomWithProbabilityFromList[key];
+                    return pr;
+                }
+            }
+
+            return default;
+        }
+
+        #endregion
+
+        #region BaseClass
+
+        public static List<Type> GetClassesByNameSpace(string nameSpace, Assembly assembly)
+        {
+            List<Type> res = new List<Type>();
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.Namespace == nameSpace)
+                    res.Add(type);
+            }
+
+            return res;
+        }
+
+        public static List<Type> GetClassesByBaseClass(Type baseType, Assembly assembly)
+        {
+            List<Type> res = new List<Type>();
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.IsAbstract) continue;
+                if (type.BaseType == baseType)
+                {
+                    res.Add(type);
+                }
+            }
+
+            return res;
+        }
+
+        public static List<Type> GetClassesByGenericClass(Type baseType)
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+
+            List<Type> res = new List<Type>();
+
+            foreach (Type type in asm.GetTypes())
+            {
+                if (type.IsAbstract) continue;
+                if (IsBaseType(type, baseType))
+                {
+                    res.Add(type);
+                }
+            }
+
+            return res;
+        }
+
+        public static bool IsBaseType(Type type, Type baseType)
+        {
+            if (type == null || baseType == null || type == baseType || type.BaseType == null)
+            {
+                return false;
+            }
+
+            if (baseType.IsInterface)
+            {
+                foreach (Type t in type.GetInterfaces())
+                {
+                    if (t == baseType)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                do
+                {
+                    if (type.BaseType == baseType)
+                    {
+                        return true;
+                    }
+
+                    type = type.BaseType;
+                } while (type != null);
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region Transform
+
+        public static bool HasAncestorName(this Transform transform, string ancestorName)
+        {
+            Transform parent = transform;
+            while (parent != null)
+            {
+                if (parent.name == ancestorName)
+                {
+                    return true;
+                }
+
+                parent = parent.parent;
+            }
+
+            return false;
+        }
+
+        public static IEnumerator UpdateLayout(RectTransform rect, UnityAction callBack = null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            yield return new WaitForEndOfFrame();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            yield return new WaitForEndOfFrame();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            yield return new WaitForEndOfFrame();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+            yield return null;
+            callBack?.Invoke();
+        }
+
+        #endregion
+
+        #region Project Path
+
+        public static string ConvertProjectPathToAbsolutePath(string projectPath)
+        {
+            if (projectPath.StartsWith("/"))
+            {
+                return Application.dataPath + projectPath;
+            }
+            else
+            {
+                return $"{Application.dataPath}/{projectPath}";
+            }
+        }
+
+        public static string ConvertAbsolutePathToProjectPath(string absolutePath)
+        {
+            if (absolutePath.Contains("\\"))
+            {
+                absolutePath = absolutePath.Replace("\\", "/");
+            }
+
+            if (absolutePath.StartsWith(Application.dataPath))
+            {
+                return "Assets" + absolutePath.Replace(Application.dataPath, "");
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Time
+
+        public static string TimeToString_Milisecond(float timeTick)
+        {
+            return "." + Mathf.CeilToInt(timeTick % 1 * 10f);
+        }
+
+        public static string GetSecondsToTimeString(float totalSeconds)
+        {
+            string minutes = Mathf.Floor(totalSeconds / 60).ToString("0");
+            string seconds = Mathf.Floor(totalSeconds % 60).ToString("00");
+            return minutes + ":" + seconds;
+        }
+
+        #endregion
+
+        #region Probability & Math
+
+        public static float Remap(this float value, float from1, float to1, float from2, float to2)
+        {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
+        public static float Remap(this int value, float from1, float to1, float from2, float to2)
+        {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
+        public static bool IsSameSign(float a, float b)
+        {
+            return a * b >= 0;
+        }
+
+        public static bool IsSameSign(double a, double b)
+        {
+            return a * b >= 0;
+        }
+
+        public static int Sign(float value, bool doAllow0 = true)
+        {
+            if (value < 0) return -1;
+            if (value > 0) return 1;
+            if (doAllow0) return 0;
+            return 1; // We can specify to prevent returning 0. Very useful for any variable with "dir" in the name.
+        }
+
+        public static bool RandomBool()
+        {
+            return Random.Range(0, 1f) < 0.5f;
+        }
+
+        public static bool ProbabilityBool(this float probability)
+        {
+            return Random.Range(0f, 1f) < probability;
+        }
+
+        public static bool ProbabilityBool(this uint probabilityPercent)
+        {
+            return Random.Range(0, 100) < probabilityPercent;
+        }
+
+        #endregion
 
         public static Vector3 GenerateRandomPosInsideCollider(BoxCollider bc)
         {
@@ -195,29 +630,6 @@ namespace BiangStudio
             return (Vector3.Dot(S_P, S_E) / S_E.magnitude * S_E.normalized - S_P).magnitude;
         }
 
-        public static string TimeToString(float timeTick)
-        {
-            return Mathf.FloorToInt(timeTick / 60f) + ":" + Mathf.FloorToInt(timeTick % 60).ToString().PadLeft(2, '0');
-        }
-
-        public static string TimeToString_Milisecond(float timeTick)
-        {
-            return "." + Mathf.CeilToInt(timeTick % 1 * 10f);
-        }
-
-        public static void Shuffle<T>(this List<T> list)
-        {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = Random.Range(0, n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-
         public static float GetClipLength(Animator animator, string clip)
         {
             if (null == animator || String.IsNullOrEmpty(clip) || null == animator.runtimeAnimatorController)
@@ -252,116 +664,6 @@ namespace BiangStudio
             return localIP;
         }
 
-        public static float Remap(this float value, float from1, float to1, float from2, float to2)
-        {
-            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
-        }
-
-        public static float Remap(this int value, float from1, float to1, float from2, float to2)
-        {
-            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
-        }
-
-        public static IEnumerator UpdateLayout(RectTransform rect, UnityAction callBack = null)
-        {
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            yield return new WaitForEndOfFrame();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            yield return new WaitForEndOfFrame();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            yield return new WaitForEndOfFrame();
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-            yield return null;
-            callBack?.Invoke();
-        }
-
-        public static Color HTMLColorToColor(string htmlColor)
-        {
-            Color cl = new Color();
-            ColorUtility.TryParseHtmlString(htmlColor, out cl);
-            return cl;
-        }
-
-        public static List<Type> GetClassesByNameSpace(string nameSpace, Assembly assembly)
-        {
-            List<Type> res = new List<Type>();
-
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (type.Namespace == nameSpace)
-                    res.Add(type);
-            }
-
-            return res;
-        }
-
-        public static List<Type> GetClassesByBaseClass(Type baseType, Assembly assembly)
-        {
-            List<Type> res = new List<Type>();
-
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (type.IsAbstract) continue;
-                if (type.BaseType == baseType)
-                {
-                    res.Add(type);
-                }
-            }
-
-            return res;
-        }
-
-        public static List<Type> GetClassesByGenericClass(Type baseType)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-
-            List<Type> res = new List<Type>();
-
-            foreach (Type type in asm.GetTypes())
-            {
-                if (type.IsAbstract) continue;
-                if (IsBaseType(type, baseType))
-                {
-                    res.Add(type);
-                }
-            }
-
-            return res;
-        }
-
-        public static bool IsBaseType(Type type, Type baseType)
-        {
-            if (type == null || baseType == null || type == baseType || type.BaseType == null)
-            {
-                return false;
-            }
-
-            if (baseType.IsInterface)
-            {
-                foreach (Type t in type.GetInterfaces())
-                {
-                    if (t == baseType)
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                do
-                {
-                    if (type.BaseType == baseType)
-                    {
-                        return true;
-                    }
-
-                    type = type.BaseType;
-                } while (type != null);
-            }
-
-            return false;
-        }
-
         public static string TextToVertical(string text)
         {
             StringBuilder sb = new StringBuilder();
@@ -374,118 +676,12 @@ namespace BiangStudio
             return sb.ToString().Trim('\n');
         }
 
-        public static List<T> GetRandomFromList<T>(List<T> OriList, int number, SRandom random, List<T> exceptList = null)
+        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings
         {
-            return GetRandomFromListCore(OriList, number, random, exceptList);
-        }
-
-        public static List<T> GetRandomFromList<T>(List<T> OriList, int number, List<T> exceptList = null)
-        {
-            return GetRandomFromListCore(OriList, number, null, exceptList);
-        }
-
-        private static List<T> GetRandomFromListCore<T>(List<T> OriList, int number, SRandom random = null, List<T> exceptList = null)
-        {
-            if (OriList == null || OriList.Count == 0) return new List<T>();
-
-            List<T> ori = OriList.ToArray().ToList();
-            if (exceptList != null)
-            {
-                List<T> remove = new List<T>();
-                foreach (T t in ori)
-                {
-                    if (exceptList.Contains(t))
-                    {
-                        remove.Add(t);
-                    }
-                }
-
-                foreach (T removeT in remove)
-                {
-                    ori.Remove(removeT);
-                }
-            }
-
-            if (number > ori.Count) number = ori.Count;
-
-            HashSet<int> indices = new HashSet<int>();
-            if (random == null)
-            {
-                System.Random rd = new System.Random(DateTime.Now.Millisecond * number);
-                while (indices.Count < number)
-                {
-                    int index = rd.Next(0, ori.Count);
-                    if (!indices.Contains(index))
-                    {
-                        indices.Add(index);
-                    }
-                }
-            }
-            else
-            {
-                while (indices.Count < number)
-                {
-                    int index = random.Range(0, ori.Count);
-                    if (!indices.Contains(index))
-                    {
-                        indices.Add(index);
-                    }
-                }
-            }
-
-            List<T> res = new List<T>();
-            foreach (int i in indices)
-            {
-                res.Add(ori[i]);
-            }
-
-            return res;
-        }
-
-        public static List<T> GetRandomWithProbabilityFromList<T>(List<T> OriList, int number) where T : Probability
-        {
-            if (OriList == null || OriList.Count == 0) return new List<T>();
-
-            int accu = 0;
-            SortedDictionary<int, T> resDict = new SortedDictionary<int, T>();
-            foreach (T probability in OriList)
-            {
-                if (probability.Probability > 0)
-                {
-                    accu += probability.Probability;
-                    resDict.Add(accu, probability);
-                }
-            }
-
-            System.Random rd = new System.Random(DateTime.Now.Millisecond * number);
-            HashSet<T> res = new HashSet<T>();
-            while (res.Count < number)
-            {
-                int index = rd.Next(0, accu);
-                foreach (int key in resDict.Keys)
-                {
-                    if (key >= index)
-                    {
-                        T pr = resDict[key];
-                        if (!res.Contains(pr))
-                        {
-                            res.Add(pr);
-                        }
-                        else
-                        {
-                            if (!pr.IsSingleton)
-                            {
-                                res.Add((T) pr.ProbabilityClone());
-                            }
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            return res.ToList();
-        }
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            NullValueHandling = NullValueHandling.Ignore,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        };
 
         public static void CopyDirectory(string srcPath, string destPath)
         {
@@ -509,99 +705,103 @@ namespace BiangStudio
             }
         }
 
-        public static string HighlightStringFormat(string src, string color, params object[] args)
-        {
-            string[] coloredStrings = new string[args.Length];
-            for (int i = 0; i < args.Length; i++)
-            {
-                coloredStrings[i] = "<" + color + ">" + args[i] + "</color>";
-            }
-
-            return String.Format(src, coloredStrings);
-        }
-
-        public static string HighlightStringFormat(string src, string color, bool[] needTint, params object[] args)
-        {
-            string[] coloredStrings = new string[args.Length];
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (needTint[i])
-                {
-                    coloredStrings[i] = "<" + color + ">" + args[i] + "</color>";
-                }
-                else
-                {
-                    coloredStrings[i] = args[i].ToString();
-                }
-            }
-
-            return String.Format(src, coloredStrings);
-        }
-
-        public static string AddHighLightColorToText(string highLightText, string color)
-        {
-            return "<color=\"" + color + "\">" + highLightText + "</color>";
-        }
-
-        private static string colorStringPattern = @"(.*)(<#)([0-9a-fA-F]{6,8}>.*</color>)(.*)";
-
-        public static string TextMeshProColorStringConvertToText(string colorString)
-        {
-            Regex rg = new Regex(colorStringPattern);
-            if (rg.IsMatch(colorString))
-            {
-                string replace = colorString;
-                while (rg.IsMatch(replace))
-                {
-                    replace = rg.Replace(replace, "$1<color=#$3$4");
-                }
-
-                return replace;
-            }
-
-            return colorString;
-        }
-
         public static Vector3 GetIntersectWithLineAndPlane(Vector3 point, Vector3 direct, Vector3 planeNormal, Vector3 planePoint)
         {
             float d = Vector3.Dot(planePoint - point, planeNormal) / Vector3.Dot(direct.normalized, planeNormal);
             return d * direct.normalized + point;
         }
 
-        public static string ConvertProjectPathToAbsolutePath(string projectPath)
+        /// <summary>
+        /// Can only be used inside OnDrawGizmos()
+        /// </summary>
+        /// <param name="m_Trans"></param>
+        /// <param name="relativePosition"></param>
+        /// <param name="wireFrameColor"></param>
+        /// <param name="labelColor"></param>
+        /// <param name="label"></param>
+        public static void DrawSpecialTip(this Transform m_Trans, Vector3 relativePosition, Color wireFrameColor, Color labelColor, string label)
         {
-            if (projectPath.StartsWith("/"))
+#if UNITY_EDITOR
+            if (!wireFrameColor.a.Equals(0))
             {
-                return Application.dataPath + projectPath;
+                Gizmos.color = wireFrameColor;
+                Gizmos.DrawWireCube(m_Trans.position, Vector3.one);
+            }
+
+            if (!labelColor.a.Equals(0) && !string.IsNullOrWhiteSpace(label))
+            {
+                GUIStyle style = new GUIStyle();
+                style.normal.textColor = labelColor;
+                style.fontSize = 15;
+                Handles.BeginGUI();
+                Vector3 pos = m_Trans.position + relativePosition;
+                Vector2 pos2D = HandleUtility.WorldToGUIPoint(pos);
+                GUI.Label(new Rect(pos2D.x, pos2D.y, 100, 100), label, style);
+                Handles.EndGUI();
+            }
+
+#endif
+        }
+
+        public static Vector3 GetSingleDirectionVectorXZ(this Vector3 vector)
+        {
+            if (Mathf.Abs(vector.x) >= Mathf.Abs(vector.z))
+            {
+                return new Vector3(vector.x, 0, 0);
             }
             else
             {
-                return $"{Application.dataPath}/{projectPath}";
+                return new Vector3(0, 0, vector.z);
             }
         }
 
-        public static string ConvertAbsolutePathToProjectPath(string absolutePath)
+        public static float RandomGaussian(float minValue = 0.0f, float maxValue = 1.0f)
         {
-            if (absolutePath.Contains("\\"))
+            float u, v, S;
+            do
             {
-                absolutePath = absolutePath.Replace("\\", "/");
-            }
+                u = 2.0f * UnityEngine.Random.value - 1.0f;
+                v = 2.0f * UnityEngine.Random.value - 1.0f;
+                S = u * u + v * v;
+            } while (S >= 1.0f);
 
-            if (absolutePath.StartsWith(Application.dataPath))
+            // Standard Normal Distribution
+            float std = u * Mathf.Sqrt(-2.0f * Mathf.Log(S) / S);
+
+            // Normal Distribution centered between the min and max value
+            // and clamped following the "three-sigma rule"
+            float mean = (minValue + maxValue) / 2.0f;
+            float sigma = (maxValue - mean) / 3.0f;
+            return Mathf.Clamp(std * sigma + mean, minValue, maxValue);
+        }
+
+        public static int RandomGaussianInt(int minValue = 0, int maxValue = 1)
+        {
+            float u, v, S;
+            do
             {
-                return "Assets" + absolutePath.Replace(Application.dataPath, "");
-            }
-            else
-            {
-                return null;
-            }
+                u = 2.0f * Random.value - 1.0f;
+                v = 2.0f * Random.value - 1.0f;
+                S = u * u + v * v;
+            } while (S >= 1.0f);
+
+            // Standard Normal Distribution
+            float std = u * Mathf.Sqrt(-2.0f * Mathf.Log(S) / S);
+
+            // Normal Distribution centered between the min and max value
+            // and clamped following the "three-sigma rule"
+            float mean = (minValue + maxValue) / 2.0f;
+            float sigma = (maxValue - mean) / 3.0f;
+            return Mathf.RoundToInt(Mathf.Clamp(std * sigma + mean, minValue, maxValue));
         }
 
         public static void RemoveNull<T>(this List<T> list)
         {
             // 找出第一个空元素 O(n)
             int count = list.Count;
-            for (int i = 0; i < count; i++)
+            for (int i = 0;
+                i < count;
+                i++)
                 if (list[i] == null)
                 {
                     // 记录当前位置
