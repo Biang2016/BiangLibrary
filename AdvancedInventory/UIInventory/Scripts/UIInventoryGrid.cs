@@ -40,6 +40,9 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
         [SerializeField]
         private Color PreviewColor;
 
+        [SerializeField]
+        private Image LockIcon;
+
         internal bool Available => Data.Available;
 
         internal bool Locked => Data.Locked;
@@ -63,6 +66,7 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
 
         internal void OnSetState(InventoryGrid.States newValue)
         {
+            LockIcon.enabled = newValue == InventoryGrid.States.Locked;
             switch (newValue)
             {
                 case InventoryGrid.States.Locked:
