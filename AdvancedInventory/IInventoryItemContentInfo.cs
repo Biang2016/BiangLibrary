@@ -46,6 +46,11 @@ namespace BiangLibrary.AdvancedInventory
         Sprite ItemSprite { get; }
 
         /// <summary>
+        /// This sprite (1x1 size) is for items which might be displayed in UI (square grid)
+        /// </summary>
+        Sprite ItemSprite_1x1 { get; }
+
+        /// <summary>
         /// If needed, you can define a color for this item.
         /// </summary>
         Color ItemColor { get; }

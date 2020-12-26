@@ -21,6 +21,9 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
         private Transform UIInventoryTitleContainer;
 
         [SerializeField]
+        private UIInventoryDragMoveHandle UIInventoryDragMoveHandle;
+
+        [SerializeField]
         private GridLayoutGroup ItemContainerGridLayout;
 
         public RectTransform PanelTransform;
@@ -64,8 +67,10 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
             UIInventory.UIInventoryPanel = this;
 
             UIInventoryTitle.text = uiInventory.InventoryName;
+            UIInventoryDragMoveHandle.EnableScreenClamp = uiInventory.EnableScreenClamp;
             ((RectTransform) UIInventoryTitleContainer).sizeDelta = new Vector2(uiInventory.GridSize * UIInventory.Columns, ((RectTransform) UIInventoryTitleContainer).sizeDelta.y);
             ((RectTransform) Container).sizeDelta = new Vector2(uiInventory.GridSize * UIInventory.Columns, uiInventory.GridSize * UIInventory.Rows);
+
             ItemContainerGridLayout.constraintCount = uiInventory.Columns;
             ItemContainerGridLayout.cellSize = new Vector2(uiInventory.GridSize, uiInventory.GridSize);
 

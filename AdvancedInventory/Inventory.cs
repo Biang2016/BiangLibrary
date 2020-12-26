@@ -14,7 +14,7 @@ namespace BiangLibrary.AdvancedInventory
     {
         public string InventoryName;
         public DragAreaIndicator DragAreaIndicator;
-        public static bool EnableLog = false;
+        public bool EnableLog = false;
 
         public delegate bool KeyDownDelegate();
 
@@ -85,6 +85,7 @@ namespace BiangLibrary.AdvancedInventory
         /// <param name="unlockedPartialGrids">is there any grid locked at the beginning</param>
         /// <param name="unlockedGridCount">how many grids are locked at the beginning</param>
         /// <param name="dragOutDrop">allows item to be dragged and dropped outside inventory</param>
+        /// <param name="enableLog">enable inventory log</param>
         /// <param name="rotateItemKeyDownHandler">this delegate should return a bool whether the rotate item key is pressed down</param>
         /// <param name="coordinateTransformationHandler_FromPosToMatrixIndex"></param>
         /// <param name="coordinateTransformationHandler_FromMatrixIndexToPos"></param>
@@ -101,6 +102,7 @@ namespace BiangLibrary.AdvancedInventory
             bool unlockedPartialGrids,
             int unlockedGridCount,
             bool dragOutDrop,
+            bool enableLog,
             KeyDownDelegate rotateItemKeyDownHandler,
             CoordinateTransformationDelegate coordinateTransformationHandler_FromPosToMatrixIndex,
             CoordinateTransformationDelegate coordinateTransformationHandler_FromMatrixIndexToPos,
@@ -118,6 +120,7 @@ namespace BiangLibrary.AdvancedInventory
             UnlockedPartialGrids = unlockedPartialGrids;
             this.unlockedGridCount = unlockedGridCount;
             DragOutDrop = dragOutDrop;
+            EnableLog = enableLog;
 
             RotateItemKeyDownHandler = rotateItemKeyDownHandler;
             CoordinateTransformationHandler_FromPosToMatrixIndex = coordinateTransformationHandler_FromPosToMatrixIndex;

@@ -68,6 +68,8 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
             }
         }
 
+        public bool EnableScreenClamp = false;
+
         /// <summary>
         /// Initialize the uiInventory manager.
         /// </summary>
@@ -83,6 +85,8 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
         /// <param name="unlockedPartialGrids">is there any grid locked at the beginning</param>
         /// <param name="unlockedGridCount">how many grids are locked at the beginning</param>
         /// <param name="dragOutDrop">allows item to be dragged and dropped outside inventory</param>
+        /// <param name="enableScreenClamp">enable inventory log</param>
+        /// <param name="enableLog">enable inventory log</param>
         /// <param name="toggleUIInventoryKeyDownHandler">This handler should return a signal which toggles the uiInventory(e.g. return Input.GetKeyDown(KeyCode.B);)</param>
         /// <param name="rotateItemKeyDownHandler">This handler should return a signal which rotates the uiInventory item(e.g. return Input.GetKeyDown(KeyCode.R);)</param>
         /// <param name="instantiateUIInventoryGridHandler">This handler should instantiate a prefab with UIInventoryGrid component.</param>
@@ -90,14 +94,19 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
         /// <param name="instantiateUIInventoryItemGridHandler">This handler should instantiate a prefab with UIInventoryItemGrid component.</param>
         /// <param name="instantiateUIInventoryItemVirtualOccupationQuadHandler">This handler should instantiate a image for indicating the occupation.</param>
         public UIInventory(
-            string inventoryName, DragAreaIndicator dragAreaIndicator, DragProcessor dragProcessor, float canvasDistance, int gridSize, int rows, int columns, bool x_Mirror, bool z_Mirror, bool unlockedPartialGrids, int unlockedGridCount, bool dragOutDrop,
+            string inventoryName,
+            DragAreaIndicator dragAreaIndicator,
+            DragProcessor dragProcessor,
+            float canvasDistance,
+            int gridSize, int rows, int columns, bool x_Mirror, bool z_Mirror,
+            bool unlockedPartialGrids, int unlockedGridCount, bool dragOutDrop, bool enableScreenClamp, bool enableLog,
             KeyDownDelegate toggleUIInventoryKeyDownHandler,
             KeyDownDelegate rotateItemKeyDownHandler,
             InstantiatePrefabDelegate instantiateUIInventoryGridHandler,
             InstantiatePrefabDelegate instantiateUIInventoryItemHandler,
             InstantiatePrefabDelegate instantiateUIInventoryItemGridHandler,
             InstantiatePrefabDelegate instantiateUIInventoryItemVirtualOccupationQuadHandler
-        ) : base(inventoryName, dragAreaIndicator, gridSize, rows, columns, x_Mirror, z_Mirror, unlockedPartialGrids, unlockedGridCount, dragOutDrop, rotateItemKeyDownHandler,
+        ) : base(inventoryName, dragAreaIndicator, gridSize, rows, columns, x_Mirror, z_Mirror, unlockedPartialGrids, unlockedGridCount, dragOutDrop, enableLog, rotateItemKeyDownHandler,
             (gridPos) => new GridPosR(gridPos.x, -gridPos.z),
             (gridPos_matrix) => new GridPosR(gridPos_matrix.x, -gridPos_matrix.z),
             (gridPos) => new GridPosR(gridPos.x, -gridPos.z),
@@ -110,6 +119,7 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
             InstantiateUIInventoryItemHandler = instantiateUIInventoryItemHandler;
             InstantiateUIInventoryItemGridHandler = instantiateUIInventoryItemGridHandler;
             InstantiateUIInventoryItemVirtualOccupationQuadHandler = instantiateUIInventoryItemVirtualOccupationQuadHandler;
+            EnableScreenClamp = enableScreenClamp;
         }
 
         public void Update()
