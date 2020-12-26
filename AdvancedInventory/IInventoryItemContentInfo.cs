@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BiangLibrary.GameDataFormat.Grid;
 using UnityEngine;
 
@@ -54,5 +53,7 @@ namespace BiangLibrary.AdvancedInventory
         /// If needed, you can define a color for this item.
         /// </summary>
         Color ItemColor { get; }
+
+        bool Rotatable { get; }
     }
 }

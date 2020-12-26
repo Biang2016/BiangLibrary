@@ -85,7 +85,7 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
         /// <param name="unlockedPartialGrids">is there any grid locked at the beginning</param>
         /// <param name="unlockedGridCount">how many grids are locked at the beginning</param>
         /// <param name="dragOutDrop">allows item to be dragged and dropped outside inventory</param>
-        /// <param name="enableScreenClamp">enable inventory log</param>
+        /// <param name="enableScreenClamp">enable inventory UI panel's screen-clamping</param>
         /// <param name="enableLog">enable inventory log</param>
         /// <param name="toggleUIInventoryKeyDownHandler">This handler should return a signal which toggles the uiInventory(e.g. return Input.GetKeyDown(KeyCode.B);)</param>
         /// <param name="rotateItemKeyDownHandler">This handler should return a signal which rotates the uiInventory item(e.g. return Input.GetKeyDown(KeyCode.R);)</param>

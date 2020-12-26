@@ -65,6 +65,7 @@ namespace BiangLibrary.AdvancedInventory.UIInventory
 
         private void Rotate()
         {
+            if (!InventoryItem.ItemContentInfo.Rotatable) return;
             GridPosR.Orientation newOri = GridPosR.RotateOrientationClockwise90(InventoryItem.GridPos_Matrix.orientation);
             InventoryItem.GridPos_Matrix = new GridPosR(InventoryItem.GridPos_Matrix.x, InventoryItem.GridPos_Matrix.z, newOri);
             SetVirtualGridPos(InventoryItem.GridPos_World);
