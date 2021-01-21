@@ -432,14 +432,18 @@ namespace BiangLibrary.GameDataFormat.Grid
             return new Vector3(x, y, z);
         }
 
-        public static List<GridPos3D> TransformOccupiedPositions(GridPos3D localGridPos, List<GridPos3D> ori_OccupiedPositions)
+        public static List<GridPos3D> TransformOccupiedPositions_XZ(GridPosR.Orientation orientation, List<GridPos3D> ori_OccupiedPositions)
         {
-            for (int i = 0; i < ori_OccupiedPositions.Count; i++)
+            List<GridPos3D> resGP = new List<GridPos3D>();
+
+            foreach (GridPos3D oriGP in ori_OccupiedPositions)
             {
-                ori_OccupiedPositions[i] += localGridPos;
+                GridPos temp_rot = GridPos.RotateGridPos(new GridPos(oriGP.x, oriGP.z), orientation);
+                GridPos3D final = new GridPos3D(temp_rot.x, oriGP.y, temp_rot.z);
+                resGP.Add(final);
             }
 
-            return ori_OccupiedPositions;
+            return resGP;
         }
 
         public static implicit operator Vector3(GridPos3D gp)
