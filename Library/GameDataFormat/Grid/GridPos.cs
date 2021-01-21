@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 namespace BiangLibrary.GameDataFormat.Grid
@@ -29,6 +30,9 @@ namespace BiangLibrary.GameDataFormat.Grid
             this.z = z;
             this.orientation = orientation;
         }
+
+        public float magnitude => Mathf.Sqrt(x * x + z * z);
+        public Vector3 normalized => ((Vector3) this).normalized;
 
         public static Orientation GetOrientationByLocalTrans(Transform transform)
         {
@@ -168,6 +172,11 @@ namespace BiangLibrary.GameDataFormat.Grid
             return new GridPosR(a.x * b, a.z * b, a.orientation);
         }
 
+        public static implicit operator Vector3(GridPosR gpr)
+        {
+            return new Vector3(gpr.x, 0, gpr.z);
+        }
+
         public override string ToString()
         {
             return $"({x}, {z}, {orientation})";
@@ -225,6 +234,9 @@ namespace BiangLibrary.GameDataFormat.Grid
             this.x = x;
             this.z = z;
         }
+
+        public float magnitude => Mathf.Sqrt(x * x + z * z);
+        public Vector3 normalized => ((Vector3) this).normalized;
 
         public static GridPos GetGridPosByLocalTransXZ(Transform transform, int gridSize)
         {
@@ -344,6 +356,11 @@ namespace BiangLibrary.GameDataFormat.Grid
             return new GridPosR(gp.x, gp.z, GridPosR.Orientation.Up);
         }
 
+        public static implicit operator Vector3(GridPos gp)
+        {
+            return new Vector3(gp.x, 0, gp.z);
+        }
+
         public override string ToString()
         {
             return $"({x},{z})";
@@ -425,9 +442,9 @@ namespace BiangLibrary.GameDataFormat.Grid
             return ori_OccupiedPositions;
         }
 
-        public Vector3 ToVector3()
+        public static implicit operator Vector3(GridPos3D gp)
         {
-            return new Vector3(x, y, z);
+            return new Vector3(gp.x, gp.y, gp.z);
         }
 
         /// <summary>
@@ -466,6 +483,9 @@ namespace BiangLibrary.GameDataFormat.Grid
 
             return Zero;
         }
+
+        public float magnitude => Mathf.Sqrt(x * x + y * y + z * z);
+        public Vector3 normalized => ((Vector3) this).normalized;
 
         public static GridPos3D operator -(GridPos3D a)
         {

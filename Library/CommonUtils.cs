@@ -122,7 +122,7 @@ namespace BiangLibrary
         {
             Color cl = new Color();
             ColorUtility.TryParseHtmlString(htmlColor, out cl);
-            if (!cl.a.Equals(1))
+            if (htmlColor.Length == 9)
             {
                 cl = new Color(cl.g, cl.b, cl.a, cl.r);
             }
@@ -716,7 +716,7 @@ namespace BiangLibrary
         /// <param name="wireFrameColor"></param>
         /// <param name="labelColor"></param>
         /// <param name="label"></param>
-        public static void DrawSpecialTip(this Transform m_Trans, Vector3 relativePosition, Color wireFrameColor, Color labelColor, string label)
+        public static void DrawSpecialTip(this Transform m_Trans, Vector3 relativePosition, Color wireFrameColor, Color labelColor, string label, int fontSize = 15)
         {
 #if UNITY_EDITOR
             if (!wireFrameColor.a.Equals(0))
@@ -729,7 +729,7 @@ namespace BiangLibrary
             {
                 GUIStyle style = new GUIStyle();
                 style.normal.textColor = labelColor;
-                style.fontSize = 15;
+                style.fontSize = fontSize;
                 Handles.BeginGUI();
                 Vector3 pos = m_Trans.position + relativePosition;
                 Vector2 pos2D = HandleUtility.WorldToGUIPoint(pos);

@@ -66,10 +66,10 @@ namespace BiangLibrary.GameDataFormat.Grid
 
         public static GridRect GetBoundingRectFromListGridPos(this List<GridPos> gridPositions)
         {
-            int X_min = 999;
-            int X_max = -999;
-            int Z_min = 999;
-            int Z_max = -999;
+            int X_min = int.MaxValue;
+            int X_max = int.MinValue;
+            int Z_min = int.MaxValue;
+            int Z_max = int.MinValue;
             foreach (GridPos gp in gridPositions)
             {
                 if (gp.x < X_min)
@@ -94,6 +94,51 @@ namespace BiangLibrary.GameDataFormat.Grid
             }
 
             return new GridRect(X_min, Z_min, X_max - X_min + 1, Z_max - Z_min + 1);
+        }
+
+        public static BoundsInt GetBoundingRectFromListGridPos(this List<GridPos3D> offsetGPs, GridPos3D baseGP)
+        {
+            int X_min = int.MaxValue;
+            int X_max = int.MinValue;
+            int Y_min = int.MaxValue;
+            int Y_max = int.MinValue;
+            int Z_min = int.MaxValue;
+            int Z_max = int.MinValue;
+            foreach (GridPos3D offset in offsetGPs)
+            {
+                GridPos3D gp = offset + baseGP;
+                if (gp.x < X_min)
+                {
+                    X_min = gp.x;
+                }
+
+                if (gp.x > X_max)
+                {
+                    X_max = gp.x;
+                }
+
+                if (gp.y < Y_min)
+                {
+                    Y_min = gp.y;
+                }
+
+                if (gp.y > Y_max)
+                {
+                    Y_max = gp.y;
+                }
+
+                if (gp.z < Z_min)
+                {
+                    Z_min = gp.z;
+                }
+
+                if (gp.z > Z_max)
+                {
+                    Z_max = gp.z;
+                }
+            }
+
+            return new BoundsInt(X_min, Y_min, Z_min, X_max - X_min + 1, Y_max - Y_min + 1, Z_max - Z_min + 1);
         }
 
         public static void GetConnectionMatrix(this List<GridPos> gridPositions, out bool[,] connectionMatrix, out GridPos offset)
