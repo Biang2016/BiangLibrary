@@ -446,6 +446,23 @@ namespace BiangLibrary.GameDataFormat.Grid
             return resGP;
         }
 
+        public static GridPos3D GetNearestGPFromList(GridPos3D srcGP, List<GridPos3D> possibleGPs)
+        {
+            float minDistance = float.MaxValue;
+            GridPos3D nearestGP = Zero;
+            foreach (GridPos3D possibleGP in possibleGPs)
+            {
+                float dist = (srcGP - possibleGP).magnitude;
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    nearestGP = possibleGP;
+                }
+            }
+
+            return nearestGP;
+        }
+
         public static implicit operator Vector3(GridPos3D gp)
         {
             return new Vector3(gp.x, gp.y, gp.z);
