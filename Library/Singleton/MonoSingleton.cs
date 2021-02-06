@@ -39,5 +39,10 @@ namespace BiangLibrary.Singleton
                 }
             }
         }
+
+        public void OnReloadScene()
+        {
+            hasInstance = false;
+        }
     }
 }
