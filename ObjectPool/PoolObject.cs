@@ -5,6 +5,8 @@ namespace BiangLibrary.ObjectPool
 {
     public class PoolObject : MonoBehaviour
     {
+        public int PoolIndex;
+
         private GameObjectPool Pool { get; set; }
 
         public bool IsRecycled = false;
@@ -51,6 +53,7 @@ namespace BiangLibrary.ObjectPool
                 PoolRecycle();
             }
         }
+
         private IEnumerator Co_PoolRecycleAtFrameEnd()
         {
             yield return new WaitForEndOfFrame();
