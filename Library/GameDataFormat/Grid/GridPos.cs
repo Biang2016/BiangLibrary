@@ -434,16 +434,16 @@ namespace BiangLibrary.GameDataFormat.Grid
 
         public static List<GridPos3D> TransformOccupiedPositions_XZ(GridPosR.Orientation orientation, List<GridPos3D> ori_OccupiedPositions)
         {
-            List<GridPos3D> resGP = new List<GridPos3D>();
+            List<GridPos3D> res = new List<GridPos3D>();
 
             foreach (GridPos3D oriGP in ori_OccupiedPositions)
             {
                 GridPos temp_rot = GridPos.RotateGridPos(new GridPos(oriGP.x, oriGP.z), orientation);
                 GridPos3D final = new GridPos3D(temp_rot.x, oriGP.y, temp_rot.z);
-                resGP.Add(final);
+                res.Add(final);
             }
 
-            return resGP;
+            return res;
         }
 
         public static GridPos3D GetNearestGPFromList(GridPos3D srcGP, List<GridPos3D> possibleGPs)
