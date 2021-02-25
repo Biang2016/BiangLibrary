@@ -545,6 +545,18 @@ namespace BiangLibrary
             return Random.Range(0, 100) < probabilityPercent;
         }
 
+        public static bool ProbabilityBool(this int probabilityPercent)
+        {
+            if (probabilityPercent >= 0)
+            {
+                return Random.Range(0, 100) < probabilityPercent;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         public static Vector3 GenerateRandomPosInsideCollider(BoxCollider bc)
